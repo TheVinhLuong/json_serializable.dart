@@ -234,8 +234,7 @@ abstract class DecodeHelper implements HelperCore {
         );
       }
       if (targetType.toString().contains('?')) {
-        value =
-            'json[$jsonKeyName] is ${targetType.toString()} ? $value : null';
+          value = '(){try{return $value;}catch(e){return null;}}()';
       }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {

@@ -10,19 +10,31 @@ Person _$PersonFromJson(Map<String, dynamic> json) => Person(
       json['first-name'] as String,
       json['last-name'] as String,
       DateTime.parse(json['date-of-birth'] as String),
-      middleName: json['middle-name'] is String?
-          ? json['middle-name'] as String?
-          : null,
-      lastOrder: json['last-order'] is DateTime?
-          ? json['last-order'] == null
+      middleName: () {
+        try {
+          return json['middle-name'] as String?;
+        } catch (e) {
+          return null;
+        }
+      }(),
+      lastOrder: () {
+        try {
+          return json['last-order'] == null
               ? null
-              : DateTime.parse(json['last-order'] as String)
-          : null,
-      orders: json['orders'] is List<Order>?
-          ? (json['orders'] as List<dynamic>?)
+              : DateTime.parse(json['last-order'] as String);
+        } catch (e) {
+          return null;
+        }
+      }(),
+      orders: () {
+        try {
+          return (json['orders'] as List<dynamic>?)
               ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
-              .toList()
-          : null,
+              .toList();
+        } catch (e) {
+          return null;
+        }
+      }(),
     );
 
 Map<String, dynamic> _$PersonToJson(Person instance) {
@@ -47,18 +59,43 @@ Map<String, dynamic> _$PersonToJson(Person instance) {
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       Order._dateTimeFromEpochUs(json['date'] as int),
     )
-      ..count = json['count'] is int? ? json['count'] as int? : null
-      ..itemNumber =
-          json['itemNumber'] is int? ? json['itemNumber'] as int? : null
-      ..isRushed = json['isRushed'] is bool? ? json['isRushed'] as bool? : null
-      ..item = json['item'] is Item?
-          ? json['item'] == null
+      ..count = () {
+        try {
+          return json['count'] as int?;
+        } catch (e) {
+          return null;
+        }
+      }()
+      ..itemNumber = () {
+        try {
+          return json['itemNumber'] as int?;
+        } catch (e) {
+          return null;
+        }
+      }()
+      ..isRushed = () {
+        try {
+          return json['isRushed'] as bool?;
+        } catch (e) {
+          return null;
+        }
+      }()
+      ..item = () {
+        try {
+          return json['item'] == null
               ? null
-              : Item.fromJson(json['item'] as Map<String, dynamic>)
-          : null
-      ..prepTime = json['prep-time'] is Duration?
-          ? Order._durationFromMilliseconds(json['prep-time'] as int?)
-          : null;
+              : Item.fromJson(json['item'] as Map<String, dynamic>);
+        } catch (e) {
+          return null;
+        }
+      }()
+      ..prepTime = () {
+        try {
+          return Order._durationFromMilliseconds(json['prep-time'] as int?);
+        } catch (e) {
+          return null;
+        }
+      }();
 
 Map<String, dynamic> _$OrderToJson(Order instance) {
   final val = <String, dynamic>{};
@@ -79,9 +116,27 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
 }
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item()
-  ..count = json['count'] is int? ? json['count'] as int? : null
-  ..itemNumber = json['itemNumber'] is int? ? json['itemNumber'] as int? : null
-  ..isRushed = json['isRushed'] is bool? ? json['isRushed'] as bool? : null;
+  ..count = () {
+    try {
+      return json['count'] as int?;
+    } catch (e) {
+      return null;
+    }
+  }()
+  ..itemNumber = () {
+    try {
+      return json['itemNumber'] as int?;
+    } catch (e) {
+      return null;
+    }
+  }()
+  ..isRushed = () {
+    try {
+      return json['isRushed'] as bool?;
+    } catch (e) {
+      return null;
+    }
+  }();
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'count': instance.count,

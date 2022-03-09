@@ -12,16 +12,28 @@ BaseResponse<T> _$BaseResponseFromJson<T>(Map<String, dynamic> json) =>
       json,
       ($checkedConvert) {
         final val = BaseResponse<T>(
-          status: json['status'] is int?
-              ? $checkedConvert('status', (v) => v as int?)
-              : null,
-          msg: json['msg'] is String?
-              ? $checkedConvert('msg', (v) => v as String?)
-              : null,
-          data: json['data'] is T?
-              ? $checkedConvert(
-                  'data', (v) => BaseResponse._dataFromJson(v as Object))
-              : null,
+          status: () {
+            try {
+              return $checkedConvert('status', (v) => v as int?);
+            } catch (e) {
+              return null;
+            }
+          }(),
+          msg: () {
+            try {
+              return $checkedConvert('msg', (v) => v as String?);
+            } catch (e) {
+              return null;
+            }
+          }(),
+          data: () {
+            try {
+              return $checkedConvert(
+                  'data', (v) => BaseResponse._dataFromJson(v as Object));
+            } catch (e) {
+              return null;
+            }
+          }(),
         );
         return val;
       },
@@ -30,24 +42,56 @@ BaseResponse<T> _$BaseResponseFromJson<T>(Map<String, dynamic> json) =>
 Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
       id: json['id'] as int,
       title: json['title'] as String,
-      author: json['author'] is User?
-          ? json['author'] == null
+      author: () {
+        try {
+          return json['author'] == null
               ? null
-              : User.fromJson(json['author'] as Map<String, dynamic>)
-          : null,
-      comments: json['comments'] is List<Comment>?
-          ? (json['comments'] as List<dynamic>?)
+              : User.fromJson(json['author'] as Map<String, dynamic>);
+        } catch (e) {
+          return null;
+        }
+      }(),
+      comments: () {
+        try {
+          return (json['comments'] as List<dynamic>?)
               ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
-              .toList()
-          : null,
+              .toList();
+        } catch (e) {
+          return null;
+        }
+      }(),
     );
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: json['id'] is int? ? json['id'] as int? : null,
-      email: json['email'] is String? ? json['email'] as String? : null,
+      id: () {
+        try {
+          return json['id'] as int?;
+        } catch (e) {
+          return null;
+        }
+      }(),
+      email: () {
+        try {
+          return json['email'] as String?;
+        } catch (e) {
+          return null;
+        }
+      }(),
     );
 
 Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
-      id: json['id'] is int? ? json['id'] as int? : null,
-      content: json['content'] is String? ? json['content'] as String? : null,
+      id: () {
+        try {
+          return json['id'] as int?;
+        } catch (e) {
+          return null;
+        }
+      }(),
+      content: () {
+        try {
+          return json['content'] as String?;
+        } catch (e) {
+          return null;
+        }
+      }(),
     );
